@@ -1,0 +1,10 @@
+[
+    {
+        "customerId": "user123",
+        "password": "pass123"
+    },
+    {
+        "customerId": "john_doe",
+        "password": "qwerty123"
+    }
+]
