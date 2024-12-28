@@ -38,7 +38,10 @@ app.post('/submit-data', (req, res) => {
             return res.status(500).json({ success: false, message: 'Failed to save data.' });
         }
 
-        console.log(`Data saved in ${fileName}`);
+        // Log the saved file's location
+        console.log(`Data saved at: ${filePath}`);
+
+        console.log('Successfully saved data for:', customerId); // Optional extra logging
         res.json({ success: true, message: `Data saved in ${fileName}!` });
     });
 });
